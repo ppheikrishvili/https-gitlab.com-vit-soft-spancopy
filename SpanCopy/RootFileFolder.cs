@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SpanCopy
+﻿namespace SpanCopy
 {
     public class RootFileFolder
     {
@@ -14,12 +9,8 @@ namespace SpanCopy
             FileName = fileName;
         }
 
-
         public string FullName { get; set; }
         public string FolderName { get; set; }
         public string FileName { get; set; }
-
-
-
     }
 }
