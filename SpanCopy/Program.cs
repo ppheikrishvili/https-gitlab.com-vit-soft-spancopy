@@ -32,6 +32,7 @@ namespace SpanCopy
             var backUpFolderName = CreateDestFolder(fileFolderInfo.ToFolderName, dirCounter.ToString(), "");
             
             decimal totalLength = 0;
+
             
             foreach (string folderName in folders)
             {
