@@ -30,7 +30,9 @@ namespace SpanCopy
             List<string> CopedFiles = new List<string>();
 
             var backUpFolderName = CreateDestFolder(fileFolderInfo.ToFolderName, dirCounter.ToString(), "");
+            
             decimal totalLength = 0;
+            
             foreach (string folderName in folders)
             {
                 var copyFiles = rootFileFolders.Where(s => s.FolderName == folderName).ToList();
