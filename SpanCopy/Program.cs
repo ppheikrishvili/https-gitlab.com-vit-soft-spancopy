@@ -10,23 +10,7 @@ namespace SpanCopy
         static void Main(string[] args)
         {
             string SubFolderName = DateTime.Today.ToString("yyyyMMdd");
-            FileFolderInfo fileFolderInfo = new FileFolderInfo();
-
-            for (int i = 0; i < args.Length; i++)
-            {
-                if (args[i].Contains("/maxsize"))
-                {
-                    if ((++i < args.Length) && (decimal.TryParse(args[i], out decimal result)))
-                        fileFolderInfo.MaxSummaryFileSize = result*1024*1024;
-                }
-                else if (args[i].Contains("/source"))
-                {
-                    if (++i < args.Length) fileFolderInfo.FromFolderName = args[i];
-                }
-                else if (args[i].Contains("/target"))
-                    if (++i < args.Length)
-                        fileFolderInfo.ToFolderName = args[i] + "\\" + SubFolderName;
-            }
+            FileFolderInfo fileFolderInfo = new FileFolderInfo(args, SubFolderName);
 
             if (!fileFolderInfo.IsOk())
             {
@@ -34,13 +18,10 @@ namespace SpanCopy
                     "Use SpanCopy.exe /maxsize 'fileSizeGB' /source 'FromFolderName' /target 'ToFolderName'");
                 return;
             }
-           
 
             string[] files = Directory.GetFiles(fileFolderInfo.FromFolderName, "*", SearchOption.AllDirectories);
 
-            List<RootFileFolder> rootFileFolders = files.Select(s => new RootFileFolder(s,
-                Path.GetDirectoryName(s)?.Substring(fileFolderInfo.FromFolderName.Length),
-                Path.GetFileName(s))).ToList();
+            List<RootFileFolder> rootFileFolders = files.Select(s => new RootFileFolder(s, fileFolderInfo.FromFolderName)).ToList();
 
             List<string> folders = rootFileFolders.Select(s => s.FolderName).Distinct().ToList();
 
@@ -48,8 +29,7 @@ namespace SpanCopy
 
             List<string> CopedFiles = new List<string>();
 
-            var backUpFolderName = CreateDestFolder(fileFolderInfo.ToFolderName, 
-                dirCounter.ToString(), "");
+            var backUpFolderName = CreateDestFolder(fileFolderInfo.ToFolderName, dirCounter.ToString(), "");
             decimal totalLength = 0;
             foreach (string folderName in folders)
             {
@@ -57,8 +37,7 @@ namespace SpanCopy
 
                 string fullBackUpName = "";
 
-                if (copyFiles.Any())
-                    fullBackUpName = CreateDestFolder(backUpFolderName, "", folderName);
+                if (copyFiles.Any()) fullBackUpName = CreateDestFolder(backUpFolderName, "", folderName);
 
                 foreach (var file in copyFiles)
                 {
