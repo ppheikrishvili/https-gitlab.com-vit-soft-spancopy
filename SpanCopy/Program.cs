@@ -43,11 +43,9 @@ namespace SpanCopy
                 {
                     decimal fileSizeByte = new FileInfo(file.FullName).Length;
 
-                    if (fileSizeByte > fileFolderInfo.MaxSummaryFileSize)
-                        continue;
+                    if (fileSizeByte > fileFolderInfo.MaxSummaryFileSize) continue;
                     
-                    if (totalLength + fileSizeByte <= fileFolderInfo.MaxSummaryFileSize)
-                        totalLength += fileSizeByte;
+                    if (totalLength + fileSizeByte <= fileFolderInfo.MaxSummaryFileSize) totalLength += fileSizeByte;
                     else
                     {
                         CreateIndexFile(backUpFolderName, CopedFiles);
